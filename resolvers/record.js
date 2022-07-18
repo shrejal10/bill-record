@@ -1,23 +1,44 @@
 const RecordModel = require('./../models/RecordModel');
-
+const utils = require('./../utils/utils');
 const recordResolvers = {
     Query : {
         getSingleBill: async (parent, { id }, context, info) => {
-            const record = await RecordModel.findById(id);
-            return record;  
+            try{
+              const record = await RecordModel.findById(id);
+            if(record == null)
+            {
+              return utils.sendResponse(true,"No Records found !!!", record,' ');
+
+            }
+            else
+            return utils.sendResponse(true,"Bill Records !!!", record,' ');
+
+            }
+            catch(error){
+              const errorMsg = `Something went wrong Please try again !!! (${error})`
+              return utils.sendResponse(true,"Some Went wrong !!!", [],errorMsg);
+            }
+          
           
           },
         
         getAllRecords : async () =>{
            try{
                 const record = await RecordModel.find();
-                
-            return record;
+                if(record == null)
+            {
+              return utils.sendResponse(true,"No Records found !!!", [],' ');
+
+            }
+            else
+            return utils.sendResponse(true,"Bill Records !!!", record,' ');
+
+            
            }
            catch(error){
                 const errorMsg = `Something went wrong Please try again !!! (${error})`
-                return errorMsg;
-            }
+                return utils.sendResponse(true,"Some Went wrong !!!", [],errorMsg);
+              }
         },
       
 
@@ -33,23 +54,25 @@ const recordResolvers = {
                 meterNo, username, address, units, month
             });
             await record.save();
-            return "Bill uploaded successfully !!";
+            return utils.sendResponse(true,"Bill Uploaded Successfully !!", record,' ');
           }
           catch(error){
               const errorMsg = `Something went wrong Please try again !!! (${error})`
-              return errorMsg;
+      
+              return utils.sendResponse(false, "Something went wrong !!!", [], errorMsg);
           }
         },
         deleteRecord: async (parent, args, context, info) => {
             try{
                 const { id } = args;
             await RecordModel.findByIdAndDelete(id);
-            return "Bill deleted succesfully !!!";
+            return utils.sendRespStatus(true,"Bill deleted succesfully !!!", ' ')
+           
             }
             catch(error){
                 const errorMsg = `Something went wrong Please try again !!! (${error})`
-                return errorMsg;
-            }
+                return utils.sendRespStatus(false, "Something went wrong !!!",  errorMsg);
+              }
           },
           updateRecord: async (parent, args, context, info) => {
            try{
@@ -61,12 +84,13 @@ const recordResolvers = {
               { new: true }
 
             );
-            return "Updated Successfully !!";
+            return utils.sendRespStatus(true,"Updated succesfully !!!", ' ')
+
            }
            catch(error){
             const errorMsg = `Something went wrong Please try again !!! (${error})`
-            return errorMsg;
-         }
+            return utils.sendRespStatus(false, "Something went wrong !!!",  errorMsg);
+          }
            
           },
 

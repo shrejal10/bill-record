@@ -11,15 +11,28 @@ const recordDefs = gql `
         
 
     }
-    
-    type resp {
+    type createBillRes {
+        status : Boolean
         message : String
+        data : Record
+        error : String
+    }
+    type BillRes {
+        status : Boolean
+        message : String
+        data : [Record]
+        error : String
+    }
+    type resp {
+        status : Boolean
+        message : String
+        error : String
 
     }
     type Query{
-        getAllRecords : [Record]
+        getAllRecords : BillRes
 
-        getSingleBill(id: ID): Record
+        getSingleBill(id: ID): createBillRes
     }
     
 
@@ -34,7 +47,7 @@ const recordDefs = gql `
 
     
     type Mutation {
-        createBill(record : RecordInput) : resp
+        createBill(record : RecordInput) : createBillRes
         deleteRecord(id: ID): resp
         updateRecord(id: ID, record: RecordInput): resp
     }

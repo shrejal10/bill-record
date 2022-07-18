@@ -17,7 +17,7 @@ async function startServer() {
   app.use((req, res) => {
     res.send("Hello from express");
   });
-  await mongoose.connect("mongodb://127.0.0.1:27017/billRecords_db", {
+  await mongoose.connect("mongodb+srv://Shrejaljoshi:EBSYzgtQH5xaPcHx@cluster0.uorbyco.mongodb.net/billRecords_db", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   });
