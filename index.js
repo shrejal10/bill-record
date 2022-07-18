@@ -15,9 +15,9 @@ async function startServer() {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app: app });
 
-  app.use((req, res) => {
-    res.send("Hello from express");
-  });
+  // app.use((req, res) => {
+  //   res.send("Hello from express");
+  // });
   await mongoose.connect(process.env.MONGODB, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
